@@ -1,8 +1,8 @@
 CXX           := g++
 CXXFLAGS      := -m64 -O3 -std=c++11
 UNI10CXXFLAGS := -DUNI_CPU -DUNI_LAPACK
-UNI10_ROOT    := /home/liusf/src/uni10
-ROOTS         := /home/liusf/src/uni10
+UNI10_ROOT    := /usr/local/uni10
+ROOTS         := /usr/local/uni10
 MAINSCRIPT    := $(code)
 SRCDIRS       := ../Operator ../Hamiltonian ../MPO ../tSDRG_tools
 SRC           := operator.cpp hamiltonian.cpp mpo.cpp tSDRG_tools.cpp measure.cpp
