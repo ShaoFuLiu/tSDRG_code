@@ -17,7 +17,7 @@ jobs:
       - name: Push commit to repo
         run: |
           git add Singularity.def
-          git commit -m "Mics: auto generate singularity.def"
           git config --global user.name 'build.bot'
           git config --global user.email 'build.bot@users.noreply.github.com'
+          git commit -m "Mics: auto generate singularity.def"
           git push
