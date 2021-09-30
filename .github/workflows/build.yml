@@ -14,7 +14,7 @@ jobs:
       - name: Translate Dockerfile to singularity
         run: spython recipe Dockerfile &> Singularity.def
 
-      - name:
+      - name: Push commit to repo
         run: |
           git config --global user.name 'build.bot'
           git config --global user.email 'build.bot@users.noreply.github.com'
