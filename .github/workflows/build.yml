@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Install singularity python
-        uses: pip install spython
+        run: pip install spython
 
       - name: Translate Dockerfile to singularity
         run: spython recipe Dockerfile &> Singularity.def
