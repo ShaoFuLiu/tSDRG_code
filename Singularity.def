@@ -1,0 +1,38 @@
+Bootstrap: docker
+From: intel/oneapi-hpckit
+Stage: spython-base
+
+%files
+. $WORKDIR
+%labels
+MAINTAINER "TaoLin" <tanlin2013@gmail.com>
+%post
+
+WORKDIR=/home
+cd $WORKDIR
+
+
+tar -xzvf uni10-2.0.0.tar.gz
+
+# Installing Uni10 v2.0.0
+cd uni10-2.0.0 \
+&& mkdir build \
+&& cd build \
+&& cmake -DBUILD_WITH_MKL=on -DBUILD_WITH_INTEL_COMPILERS=on .. \
+&& make \
+&& make install
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/uni10/lib/
+C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/uni10/include/
+CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/uni10/include/
+
+%environment
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/uni10/lib/
+export C_INCLUDE_PATH=$C_INCLUDE_PATH:/usr/local/uni10/include/
+export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/usr/local/uni10/include/
+%runscript
+cd $WORKDIR
+exec /bin/bash "$@"
+%startscript
+cd $WORKDIR
+exec /bin/bash "$@"
