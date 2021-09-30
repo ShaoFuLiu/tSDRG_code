@@ -1,0 +1,22 @@
+name: build
+
+on: push
+
+jobs:
+  docker-to-singularity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install singularity python
+        uses: pip install spython
+
+      - name: Translate Dockerfile to singularity
+        run: spython recipe Dockerfile &> Singularity.def
+
+      - name:
+        run: |
+          git config --global user.name 'build.bot'
+          git config --global user.email 'build.bot@users.noreply.github.com'
+          git commit -am "Mics: auto generate singularity.def"
+          git push
