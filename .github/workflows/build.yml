@@ -1,23 +1,26 @@
 name: build
 
-on: push
+on: workflow_dispatch
 
 jobs:
-  docker-to-singularity:
+  docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
-      - name: Install singularity python
-        run: pip install spython
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
-      - name: Translate Dockerfile to singularity
-        run: spython recipe Dockerfile &> Singularity.def
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Push commit to repo
-        run: |
-          git add Singularity.def
-          git config --global user.name 'build.bot'
-          git config --global user.email 'build.bot@users.noreply.github.com'
-          git commit -m "Mics: auto generate singularity.def"
-          git push
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tsdrg:latest
