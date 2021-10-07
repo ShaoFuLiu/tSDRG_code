@@ -3,14 +3,44 @@ Tree tensor strong disorder renormalization group.
 
 Installation
 -------
+One may choose from one of these methods below
 
-#### Docker
-
+#### I. Docker container
+One may build the Docker image with
 ```
 docker build --no-cache --force-rm -t tsdrg .
 ```
-  
-#### Build from scratch
+and launch the container interactively
+```
+docker run --rm -it tsdrg
+```
+See the documentation [here](https://docs.docker.com/engine/reference/run/) 
+if you want to run the container in background,
+or to mount the system volume into container.
+
+> **_Note:_** The size of this image is about 22.8GB, mainly because of Intel oneAPI.
+
+#### II. Singularity container
+Currently, to keep the consistency, we use Docker image to generate Singularity container. 
+
+To build the singularity image file (`.sif`),
+it is required to have a Dockerhub account for hosting the Docker image.
+One could therefore build `.sif` extension with
+```
+singularity build tsdrg.sif docker://<username>/<imagename>
+```
+One can then interact with the image in [several ways](https://sylabs.io/guides/3.0/user-guide/quick_start.html#interact-with-images).
+For instance,
+```
+singularity shell tsdrg.sif
+```
+See [here](https://sylabs.io/guides/3.0/user-guide/singularity_and_docker.html) for more information about working Docker with Singularity.
+
+> **_Note_**: By default, 
+> Singularity bind mounts /home/$USER, /tmp, and $PWD automatically into your container at runtime.
+> This is different from Docker.
+
+#### III. Build from scratch
   
 1. Install Intel oneAPI
     
@@ -66,3 +96,29 @@ Analyzing the data
 
 Data will be saved into `Main/data` in `.csv` extension,
 and with hierarchical folder structure to the input parameters.
+For instance, 
+```
+- data/
+    - PBC/
+        - Jdis010/
+            - Dim010/
+                - L32_P10_m8_1/
+                    - J_list.csv
+                    - L32_P10_m8_1_corr2.csv
+                    - ZL.csv
+                    - w_loc.csv
+                    - L32_P10_m8_1_corr1.csv
+                    - L32_P10_m8_1_string.csv
+                    - energy.csv  
+```
+
+References
+-------
+* [Yu-Ping Lin, Ying-Jer Kao, Pochung Chen, and Yu-Cheng Lin,
+  Griffiths singularities in the random quantum Ising antiferromagnet: A tree tensor network renormalization group study,
+  Phys. Rev. B 96, 064427 (2017)](
+  https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.064427)
+* [Kedar Damle, and David A. Huse,
+  Permutation-Symmetric Multicritical Points in Random Antiferromagnetic Spin Chains,
+  Phys. Rev. Lett. 89, 277203 (2002)](
+  https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.89.277203)
